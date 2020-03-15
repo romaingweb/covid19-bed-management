@@ -41,7 +41,7 @@ const App = () => {
         {resources.map(({ id, name, resources }, index) => {
           return <tr key={index}>
             <td>{name}</td>
-            {editable === id ? <ResourcesEditor /> : <Resources items={resources} />}
+            {editable === id ? <ResourcesEditor items={resources || {}} /> : <Resources items={resources} />}
           </tr>
         })}
       </tbody>

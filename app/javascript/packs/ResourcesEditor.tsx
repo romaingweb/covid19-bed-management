@@ -1,6 +1,7 @@
 import React from 'react'
 import { NumericInput } from '@blueprintjs/core'
 import { fromJS } from 'immutable'
+import FIELDS from './fields'
 
 const gid = () => {
   return new URLSearchParams(window.location.search).get('gid')
@@ -29,12 +30,11 @@ const ResourcesEditor = ({ items }) => {
   }, [data])
 
   return <React.Fragment>
-    <td>
-      <NumericInput onValueChange={(number) => handleChange(number, ['icu_beds', 'used'])} value={data.getIn(['icu_beds', 'used'], 0)} min={0} /> / <NumericInput onValueChange={(number) => handleChange(number, ['icu_beds', 'available'])} value={data.getIn(['icu_beds', 'available'], 0)} min={0} />
-    </td>
-    <td>
-      <NumericInput onValueChange={(number) => handleChange(number, ['respirators', 'used'])} value={data.getIn(['respirators', 'used'], 0)} /> / <NumericInput onValueChange={(number) => handleChange(number, ['respirators', 'available'])} value={data.getIn(['respirators', 'available'], 0)} />
-    </td>
+    {FIELDS.map(field => {
+      return <td key={field}>
+        <NumericInput onValueChange={(number) => handleChange(number, [field, 'used'])} value={data.getIn([field, 'used'], 0)} min={0} /> / <NumericInput onValueChange={(number) => handleChange(number, [field, 'available'])} value={data.getIn([field, 'available'], 0)} min={0} />
+      </td>
+    })}
   </React.Fragment>
 }
 

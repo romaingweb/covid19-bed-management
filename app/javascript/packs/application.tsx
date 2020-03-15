@@ -11,7 +11,6 @@ import Nav from './Nav'
 
 import './application.scss'
 
-
 const App = () => {
   const [resources, setResources] = React.useState([])
   const [editable, setEditable] = React.useState('')
@@ -34,6 +33,8 @@ const App = () => {
           <td>Hospitals</td>
           <td>ICU Beds</td>
           <td>Respirators</td>
+          <td>ECMO</td>
+          <td>Hemodialysis</td>
         </tr>
       </thead>
       <tbody>

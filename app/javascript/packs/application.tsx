@@ -11,12 +11,17 @@ import Nav from './Nav'
 
 import './application.scss'
 
+const example = { id: 'xxx', name: 'example-hospital', resources: { icu_beds: { used: 1, available: 10 }, respirators: { used: 0, available: 20 } } }
+
 const App = () => {
-  const [resources, setResources] = React.useState([])
+  const [resources, setResources] = React.useState([example])
+  const [editable, setEditable] = React.useState('')
   const fetchResources = async () => {
     const response = await fetch(`/resources${window.location.search}`)
-    const body = await response.json()
-    setResources([{ name: 'example', resources: { icu_beds: { used: 1, available: 10 }, respirators: { used: 0, available: 20 } } }, ...body])
+    const { resources, editable } = await response.json()
+    if (!response.ok) return
+    setResources([example, ...resources])
+    setEditable(editable)
   }
   React.useEffect(() => {
     fetchResources()
@@ -33,10 +38,11 @@ const App = () => {
         </tr>
       </thead>
       <tbody>
-        {resources.map(({ name, resources }, index) => {
+        {resources.map(({ id, name, resources }, index) => {
+          console.log(editable, id)
           return <tr key={index}>
             <td>{name}</td>
-            {resources ? <Resources items={resources} /> : <ResourcesEditor />}
+            {editable === id ? <ResourcesEditor /> : <Resources items={resources} />}
           </tr>
         })}
       </tbody>

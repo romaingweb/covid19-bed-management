@@ -39,7 +39,6 @@ const App = () => {
       </thead>
       <tbody>
         {resources.map(({ id, name, resources }, index) => {
-          console.log(editable, id)
           return <tr key={index}>
             <td>{name}</td>
             {editable === id ? <ResourcesEditor /> : <Resources items={resources} />}

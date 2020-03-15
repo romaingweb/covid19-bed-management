@@ -1,11 +1,13 @@
 import React from 'react'
 import { Navbar, Button, Alignment } from '@blueprintjs/core'
 
-const Nav = () => <Navbar>
+const toggleViewMode = (setViewMode, viewMode) => (setViewMode(!viewMode))
+
+const Nav = ({ setViewMode, viewMode }) => <Navbar>
   <Navbar.Group align={Alignment.LEFT}>
     <Navbar.Heading>Covid-19 Resources Dashboard</Navbar.Heading>
     <Navbar.Divider />
-    <Button className="bp3-minimal" icon="home" text="Home" />
+    <Button onClick={() => toggleViewMode(setViewMode, viewMode)} className="bp3-minimal" icon={viewMode ? 'edit' : 'eye-open'} text={viewMode ? "Switch to edit mode" : "Switch to view mode"} />
   </Navbar.Group>
 </Navbar>
 

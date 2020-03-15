@@ -12,21 +12,36 @@ import moment from 'moment'
 
 import './application.scss'
 
+const fetchResources = async (setResources, setEditable) => {
+  const response = await fetch(`/resources${window.location.search}`)
+  const { resources, editable } = await response.json()
+  if (!response.ok) return
+  setResources(resources)
+  setEditable(editable)
+}
+
 const App = () => {
   const [resources, setResources] = React.useState([])
   const [editable, setEditable] = React.useState('')
-  const fetchResources = async () => {
-    const response = await fetch(`/resources${window.location.search}`)
-    const { resources, editable } = await response.json()
-    if (!response.ok) return
-    setResources(resources)
-    setEditable(editable)
-  }
+  const [refreshTimer, setRefreshTimer] = React.useState(null)
+  const [viewMode, setViewMode] = React.useState(false)
+
   React.useEffect(() => {
-    fetchResources()
+    fetchResources(setResources, setEditable)
   }, [])
+
+  React.useEffect(() => {
+    if (viewMode) {
+      setRefreshTimer(setInterval(() => {
+        fetchResources(setResources, setEditable)
+      }, 10000))
+    } else {
+      setRefreshTimer(clearInterval(refreshTimer))
+    }
+  }, [viewMode])
+
   return <div>
-    <Nav />
+    <Nav setViewMode={setViewMode} viewMode={viewMode} />
 
     <HTMLTable interactive striped>
       <thead>
@@ -43,7 +58,7 @@ const App = () => {
         {resources.map(({ id, name, resources, updated_at }, index) => {
           return <tr key={index}>
             <td>{name}</td>
-            {editable === id ? <ResourcesEditor items={resources || {}} setResources={setResources} /> : <Resources items={resources} />}
+            {editable === id && !viewMode ? <ResourcesEditor items={resources || {}} setResources={setResources} /> : <Resources items={resources} />}
             <td>{moment(updated_at).format('DD MMM YYYY - HH:mm')}</td>
           </tr>
         })}

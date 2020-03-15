@@ -11,16 +11,15 @@ import Nav from './Nav'
 
 import './application.scss'
 
-const example = { id: 'xxx', name: 'example-hospital', resources: { icu_beds: { used: 1, available: 10 }, respirators: { used: 0, available: 20 } } }
 
 const App = () => {
-  const [resources, setResources] = React.useState([example])
+  const [resources, setResources] = React.useState([])
   const [editable, setEditable] = React.useState('')
   const fetchResources = async () => {
     const response = await fetch(`/resources${window.location.search}`)
     const { resources, editable } = await response.json()
     if (!response.ok) return
-    setResources([example, ...resources])
+    setResources(resources)
     setEditable(editable)
   }
   React.useEffect(() => {

@@ -4,18 +4,25 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Navbar, Button, Alignment } from '@blueprintjs/core'
+import { Card, Elevation, Navbar, Button, Alignment } from '@blueprintjs/core'
 
 import './application.scss'
 
 const App = () => (
-  <Navbar>
-    <Navbar.Group align={Alignment.LEFT}>
-      <Navbar.Heading>Covid-19 Resources Dashboard</Navbar.Heading>
-      <Navbar.Divider />
-      <Button className="bp3-minimal" icon="home" text="Home" />
-    </Navbar.Group>
-  </Navbar>
+  <div>
+    <Navbar>
+      <Navbar.Group align={Alignment.LEFT}>
+        <Navbar.Heading>Covid-19 Resources Dashboard</Navbar.Heading>
+        <Navbar.Divider />
+        <Button className="bp3-minimal" icon="home" text="Home" />
+      </Navbar.Group>
+    </Navbar>
+
+    <Card interactive elevation={Elevation.TWO}>
+      <h5>Idea</h5>
+      <p><img className="idea" src="/ETJTgNnWAAAbvbZ.jpg" /></p>
+    </Card>
+  </div>
 )
 
 document.addEventListener('DOMContentLoaded', () => {

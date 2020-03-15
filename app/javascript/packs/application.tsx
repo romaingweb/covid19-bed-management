@@ -4,26 +4,45 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Card, Elevation, Navbar, Button, Alignment } from '@blueprintjs/core'
+import { HTMLTable } from '@blueprintjs/core'
+import Resources from './Resources'
+import ResourcesEditor from './ResourcesEditor'
+import Nav from './Nav'
 
 import './application.scss'
 
-const App = () => (
-  <div>
-    <Navbar>
-      <Navbar.Group align={Alignment.LEFT}>
-        <Navbar.Heading>Covid-19 Resources Dashboard</Navbar.Heading>
-        <Navbar.Divider />
-        <Button className="bp3-minimal" icon="home" text="Home" />
-      </Navbar.Group>
-    </Navbar>
+const App = () => {
+  const [resources, setResources] = React.useState([])
+  const fetchResources = async () => {
+    const response = await fetch(`/resources${window.location.search}`)
+    const body = await response.json()
+    setResources([{ name: 'example', resources: { icu_beds: { used: 1, available: 10 }, respirators: { used: 0, available: 20 } } }, ...body])
+  }
+  React.useEffect(() => {
+    fetchResources()
+  }, [])
+  return <div>
+    <Nav />
 
-    <Card interactive elevation={Elevation.TWO}>
-      <h5>Idea</h5>
-      <p><img className="idea" src="/ETJTgNnWAAAbvbZ.jpg" /></p>
-    </Card>
-  </div>
-)
+    <HTMLTable interactive striped>
+      <thead>
+        <tr>
+          <td>Hospitals</td>
+          <td>ICU Beds</td>
+          <td>Respirators</td>
+        </tr>
+      </thead>
+      <tbody>
+        {resources.map(({ name, resources }, index) => {
+          return <tr key={index}>
+            <td>{name}</td>
+            {resources ? <Resources items={resources} /> : <ResourcesEditor />}
+          </tr>
+        })}
+      </tbody>
+    </HTMLTable>
+  </div >
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(

@@ -8,6 +8,7 @@ const Resources = ({ items }) => {
     {FIELDS.map((field) => {
       return <td key={field}>{data.getIn([field, 'used'], 'Unknown')} / {data.getIn([field, 'available'], 'Unknown')}</td>
     })}
+
   </React.Fragment>
 }
 export default Resources

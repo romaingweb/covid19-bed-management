@@ -8,6 +8,7 @@ import { HTMLTable } from '@blueprintjs/core'
 import Resources from './Resources'
 import ResourcesEditor from './ResourcesEditor'
 import Nav from './Nav'
+import moment from 'moment'
 
 import './application.scss'
 
@@ -35,13 +36,15 @@ const App = () => {
           <td>Respirators</td>
           <td>ECMO</td>
           <td>Hemodialysis</td>
+          <td>Last modified</td>
         </tr>
       </thead>
       <tbody>
-        {resources.map(({ id, name, resources }, index) => {
+        {resources.map(({ id, name, resources, updated_at }, index) => {
           return <tr key={index}>
             <td>{name}</td>
-            {editable === id ? <ResourcesEditor items={resources || {}} /> : <Resources items={resources} />}
+            {editable === id ? <ResourcesEditor items={resources || {}} setResources={setResources} /> : <Resources items={resources} />}
+            <td>{moment(updated_at).format('DD MMM YYYY - HH:mm')}</td>
           </tr>
         })}
       </tbody>

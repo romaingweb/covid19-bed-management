@@ -7,8 +7,8 @@ const gid = () => {
   return new URLSearchParams(window.location.search).get('gid')
 }
 
-const update = async (data) => {
-  await fetch('/resources', {
+const update = async (data, setResources) => {
+  const response = await fetch('/resources', {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -16,9 +16,11 @@ const update = async (data) => {
     },
     body: JSON.stringify({ resources: data.toJS(), gid: gid() })
   })
+  const { resources } = await response.json()
+  setResources(resources)
 }
 
-const ResourcesEditor = ({ items }) => {
+const ResourcesEditor = ({ items, setResources }) => {
   const [data, setData] = React.useState(fromJS(items))
 
   const handleChange = (number, field) => {
@@ -26,7 +28,7 @@ const ResourcesEditor = ({ items }) => {
   }
 
   React.useEffect(() => {
-    update(data)
+    update(data, setResources)
   }, [data])
 
   return <React.Fragment>
